@@ -74,13 +74,24 @@ fun RegisterComposition(
         )
 
         var repeatedEmail by remember { mutableStateOf("") }
-        OutlinedEmailField(
-            email = repeatedEmail,
-            onEmailChange = { repeatedEmail = it.trim() },
-            modifier = Modifier
-                .padding(bottom = 16.dp),
-            labelText = "Email"
-        )
+        if (repeatedEmail.isNotEmpty() && email != repeatedEmail)
+            OutlinedEmailField(
+                email = repeatedEmail,
+                onEmailChange = { repeatedEmail = it.trim() },
+                modifier = Modifier
+                    .padding(bottom = 16.dp),
+                labelText = "Powtórz email",
+                isInputInvalid = true,
+                invalidInputText = "Podane adresy email nie są takie same"
+            )
+        else
+            OutlinedEmailField(
+                email = repeatedEmail,
+                onEmailChange = { repeatedEmail = it.trim() },
+                modifier = Modifier
+                    .padding(bottom = 16.dp),
+                labelText = "Powtórz email"
+            )
 
         var nameAndSurname by remember { mutableStateOf("") }
         OutlinedNameAndSurnameFiled(
