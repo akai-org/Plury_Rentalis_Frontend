@@ -1,5 +1,6 @@
 package org.akai.pluryrenatlisapp.ui.components
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -14,9 +15,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.akai.pluryrenatlisapp.ui.theme.PluryRenatlisAppTheme
 import org.akai.pluryrenatlisapp.ui.theme.getDefaultOutlinedTextFieldColors
 
 @Composable
@@ -28,7 +32,8 @@ fun OutlinedTextInput(
     modifier: Modifier = Modifier,
     invalidInputText: String = "Invalid input",
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     ) {
     Column (
         modifier = modifier
@@ -46,7 +51,8 @@ fun OutlinedTextInput(
             isError = isInputInvalid,
             shape = RoundedCornerShape(12.dp),
             keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions
+            keyboardActions = keyboardActions,
+            interactionSource = interactionSource,
         )
         if (isInputInvalid) {
             Row(
@@ -69,5 +75,18 @@ fun OutlinedTextInput(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun OutlinedTextInputPreview() {
+    PluryRenatlisAppTheme {
+        OutlinedTextInput(
+            text = "",
+            onTextChange = {},
+            labelText = "test",
+            isInputInvalid = false,
+        )
     }
 }

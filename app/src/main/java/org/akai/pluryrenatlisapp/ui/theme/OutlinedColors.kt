@@ -9,16 +9,16 @@ import androidx.compose.runtime.Composable
 @Composable
 fun getDefaultOutlinedTextFieldColors(): TextFieldColors {
     return OutlinedTextFieldDefaults.colors(
-        cursorColor = MaterialTheme.colorScheme.onSurface,
-        focusedContainerColor = MaterialTheme.colorScheme.surface,
-        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-        focusedLabelColor = MaterialTheme.colorScheme.onSurface,
-        unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
-        unfocusedBorderColor = MaterialTheme.colorScheme.onSurface,
-        focusedBorderColor = MaterialTheme.colorScheme.onSurface,
-        errorLabelColor = MaterialTheme.colorScheme.onSurface,
-        errorCursorColor = MaterialTheme.colorScheme.onSurface,
-        errorContainerColor = MaterialTheme.colorScheme.surface,
-        errorBorderColor = MaterialTheme.colorScheme.onSurface,
+        cursorColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+        unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+        focusedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        unfocusedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        unfocusedBorderColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        focusedBorderColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        errorLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        errorCursorColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        errorContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+        errorBorderColor = MaterialTheme.colorScheme.onSecondaryContainer,
     )
 }

@@ -1,6 +1,8 @@
 package org.akai.pluryrenatlisapp.ui.compositions
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,36 +37,7 @@ import org.akai.pluryrenatlisapp.ui.theme.PluryRenatlisAppTheme
 fun RegisterComposition(
     authorizationHandling: (Authorization) -> Unit = {}
 ) {
-    val minorBackgroundColor = MaterialTheme.colorScheme.tertiary
-    Column (
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Card(
-            shape = RoundedCornerShape(32.dp),
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .size(160.dp)
-                .drawBehind {
-                    drawCircle(
-                        color = minorBackgroundColor,
-                        radius = center.y * 10f,
-                        center = center.copy(y = -center.y * 9f)
-                    )
-            }
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.Person,
-                contentDescription = "Account Icon",
-                tint = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.primary)
-            )
-        }
-
+    UtilityColumnWithLogo {
         var email by remember { mutableStateOf("") }
         OutlinedEmailField(
             email = email,
@@ -73,6 +47,7 @@ fun RegisterComposition(
             labelText = "Email"
         )
 
+        val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
         var repeatedEmail by remember { mutableStateOf("") }
         if (repeatedEmail.isNotEmpty() && email != repeatedEmail)
             OutlinedEmailField(
@@ -81,8 +56,9 @@ fun RegisterComposition(
                 modifier = Modifier
                     .padding(bottom = 16.dp),
                 labelText = "Powtórz email",
-                isInputInvalid = true,
-                invalidInputText = "Podane adresy email nie są takie same"
+                isInputInvalid = true, //todo: new field is unfocused
+                invalidInputText = "Podane adresy email nie są takie same",
+                interactionSource = interactionSource
             )
         else
             OutlinedEmailField(
@@ -90,31 +66,37 @@ fun RegisterComposition(
                 onEmailChange = { repeatedEmail = it.trim() },
                 modifier = Modifier
                     .padding(bottom = 16.dp),
-                labelText = "Powtórz email"
+                labelText = "Powtórz email",
+                interactionSource = interactionSource
             )
 
         var nameAndSurname by remember { mutableStateOf("") }
         OutlinedNameAndSurnameFiled(
             nameAndSurname = nameAndSurname,
-            onNameAndSurnameChang = { nameAndSurname = it.trim().replace(Regex("\\s+"), " ")},
+            onNameAndSurnameChange = { nameAndSurname = it.replace(Regex("\\s+"), " ") },
             modifier = Modifier
-                .padding(bottom = 16.dp)
-        )
+                .padding(bottom = 16.dp),
+
+            )
 
         Button(
             onClick = { /*TODO*/ },
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier
-                .padding(top = 16.dp)
+                .padding(top = 16.dp),
+            colors = ButtonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                disabledContainerColor = MaterialTheme.colorScheme.tertiary,
+                disabledContentColor = MaterialTheme.colorScheme.onTertiary
+            )
         ) {
             Text(
-                text = "Zarejestruj się",
+                text = "Zarejestruj",
                 fontSize = MaterialTheme.typography.titleMedium.fontSize,
             )
         }
     }
-
-
 }
 
 @Preview(wallpaper = Wallpapers.NONE, showBackground = true)
