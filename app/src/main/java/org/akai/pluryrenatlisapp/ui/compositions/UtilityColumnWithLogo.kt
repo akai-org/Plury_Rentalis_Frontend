@@ -34,6 +34,7 @@ fun UtilityColumnWithLogo(
             shape = RoundedCornerShape(32.dp),
             modifier = Modifier
                 .padding(bottom = 16.dp)
+                .size(160.dp)
                 .drawBehind {
                     drawCircle(
                         color = minorBackgroundColor,
