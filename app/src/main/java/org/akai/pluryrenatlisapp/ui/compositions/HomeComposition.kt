@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -20,13 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.akai.pluryrenatlisapp.R
 import org.akai.pluryrenatlisapp.data.User
 import org.akai.pluryrenatlisapp.ui.theme.PluryRenatlisAppTheme
 
 @Composable
 fun HomeComposition(
-    user: User
+    user: User,
+    rentButtonOnClick: () -> Unit = {},
+    returnButtonOnClick: () -> Unit = {},
+    registerButtonOnClick: () -> Unit = {},
+    myRegisterButtonOnClick: () -> Unit = {}
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -78,7 +79,7 @@ fun HomeComposition(
         Spacer(modifier = Modifier.height(64.dp))
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = rentButtonOnClick,
             shape = MaterialTheme.shapes.large,
             modifier = Modifier
                 .padding(
@@ -94,7 +95,7 @@ fun HomeComposition(
             )
         }
         Button(
-            onClick = { /*TODO*/ },
+            onClick = returnButtonOnClick,
             shape = MaterialTheme.shapes.large,
             modifier = Modifier
                 .padding(
@@ -110,7 +111,7 @@ fun HomeComposition(
             )
         }
         Button(
-            onClick = { /*TODO*/ },
+            onClick = registerButtonOnClick,
             shape = MaterialTheme.shapes.large,
             modifier = Modifier
                 .padding(
@@ -127,7 +128,7 @@ fun HomeComposition(
         }
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = myRegisterButtonOnClick,
             shape = MaterialTheme.shapes.large,
             modifier = Modifier
                 .fillMaxWidth(3 / 5f)
