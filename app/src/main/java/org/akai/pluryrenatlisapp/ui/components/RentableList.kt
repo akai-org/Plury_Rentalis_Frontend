@@ -1,14 +1,10 @@
 package org.akai.pluryrenatlisapp.ui.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -16,22 +12,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.akai.pluryrenatlisapp.data.Rentable
-import org.akai.pluryrenatlisapp.data.RentableType
+import org.akai.pluryrenatlisapp.data.Rent
 import org.akai.pluryrenatlisapp.ui.theme.PluryRenatlisAppTheme
 
 @Composable
 fun RentableList(
     title: String,
-    rentables: List<RentableHolder>,
-    modifier: Modifier = Modifier
+    rents: List<RentableHolder>,
+    modifier: Modifier = Modifier,
+    content: @Composable (rents: List<RentableHolder>) -> Unit = {}
 ) {
     Column (
-        modifier = modifier
+        modifier = modifier.height(MaterialTheme.typography.titleMedium.fontSize.value.dp + 10.dp + (rents.size * 50).dp)
     ) {
         Text(
             text = title,
@@ -47,40 +42,16 @@ fun RentableList(
                 MaterialTheme.colorScheme.secondary
             ),
         ) {
-            LazyColumn {
-                itemsIndexed(rentables) { index, rentable ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        LabeledCheckbox(
-                            label = rentable.rentable.name,
-                            checked = rentable.checked.value,
-                            onCheckedChange = rentable.onCheckedChange
-                        )
-                        Text(
-                            text = rentable.rentable.renter ?: "dostępne",
-                            modifier = Modifier.padding(end = 16.dp),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontSize = MaterialTheme.typography.bodyMedium.fontSize
-                        )
-                    }
-                    if (index < rentables.lastIndex)
-                        HorizontalDivider(
-                            modifier = Modifier.padding(horizontal = 16.dp),
-                            thickness = 2.dp
-                        )
-                }
-            }
+            content(rents)
         }
     }
 }
 
+
+
 data class RentableHolder(
     var checked: MutableState<Boolean>,
-    val rentable: Rentable,
+    val rent: Rent,
     val onCheckedChange: (Boolean) -> Unit = { checked.value = it }
 )
 
@@ -90,14 +61,42 @@ fun RentableListPreview() {
     PluryRenatlisAppTheme {
         RentableList(
             title = "test",
-            rentables = listOf(
+            rents = listOf(
                 RentableHolder(
                     remember{ mutableStateOf(false) },
-                    Rentable("test0", RentableType.CAR)
+                    Rent (
+                        uuid = "test",
+                        userName = "Adam Małysz",
+                        rentableName = "test1",
+                    )
                 ),
                 RentableHolder(
                     remember{mutableStateOf(false)},
-                    Rentable("test1", RentableType.CAR)
+                    Rent (
+                        uuid = "test",
+                        rentableName = "test2"
+                    )
+                ),
+                RentableHolder(
+                    remember{mutableStateOf(false)},
+                    Rent (
+                        uuid = "test",
+                        rentableName = "test2"
+                    )
+                ),
+                RentableHolder(
+                    remember{mutableStateOf(false)},
+                    Rent (
+                        uuid = "test",
+                        rentableName = "test2"
+                    )
+                ),
+                RentableHolder(
+                    remember{mutableStateOf(false)},
+                    Rent (
+                        uuid = "test",
+                        rentableName = "test2"
+                    )
                 )
             )
         )

@@ -66,7 +66,7 @@ fun HomeComposition(
                 )
 
                 Text(
-                    text = user.nameAndSurname,
+                    text = user.name,
                     fontStyle = MaterialTheme.typography.labelLarge.fontStyle,
                     fontSize = MaterialTheme.typography.labelLarge.fontSize,
                     modifier = Modifier.padding(

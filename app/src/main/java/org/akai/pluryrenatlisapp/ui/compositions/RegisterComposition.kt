@@ -9,24 +9,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import org.akai.pluryrenatlisapp.apiclient.Authorization
-import org.akai.pluryrenatlisapp.apiclient.RegisterViewModel
+import kotlinx.coroutines.launch
 import org.akai.pluryrenatlisapp.ui.components.OutlinedEmailField
 import org.akai.pluryrenatlisapp.ui.components.OutlinedNameAndSurnameFiled
 import org.akai.pluryrenatlisapp.ui.theme.PluryRenatlisAppTheme
 
 @Composable
 fun RegisterComposition(
-    authorizationHandling: (Authorization) -> Unit = {}
+    onRegister: suspend (email: String, nameAndSurname: String) -> Unit = { _, _ -> }
 ) {
     UtilityColumnWithLogo {
         var email by remember { mutableStateOf("") }
@@ -70,18 +68,9 @@ fun RegisterComposition(
 
             )
 
-        val registerVM: RegisterViewModel = viewModel()
-        val token by registerVM.token.observeAsState()
-        if (token?.isNotEmpty() == true)
-            authorizationHandling(Authorization(token!!))
-
+        val onClickCoroutine = rememberCoroutineScope()
         Button(
-            onClick = {
-                      registerVM.register(
-                          username = nameAndSurname,
-                          email = email,
-                      )
-            },
+            onClick = { onClickCoroutine.launch { onRegister(email, nameAndSurname) } },
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier
                 .padding(top = 16.dp),

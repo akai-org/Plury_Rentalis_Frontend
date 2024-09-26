@@ -1,6 +1,10 @@
 package org.akai.pluryrenatlisapp.data
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class User(
-    val nameAndSurname: String,
-    val email: String
+    var name: String = "",
+    var email: String = "",
+    var uuid: String? = null
 )

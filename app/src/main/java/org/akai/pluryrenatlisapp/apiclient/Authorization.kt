@@ -1,8 +1,14 @@
 package org.akai.pluryrenatlisapp.apiclient
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Authorization (
-    val token: String,
+    var token: String,
 ) {
+    constructor() : this("")
+
+
     override fun toString(): String {
         return token
     }

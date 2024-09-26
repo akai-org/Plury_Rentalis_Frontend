@@ -10,53 +10,56 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import org.akai.pluryrenatlisapp.apiclient.Authorization
-import org.akai.pluryrenatlisapp.apiclient.AuthorizationViewModel
-import org.akai.pluryrenatlisapp.apiclient.RegisterViewModel
+import kotlinx.coroutines.launch
 import org.akai.pluryrenatlisapp.ui.components.LabeledCheckbox
 import org.akai.pluryrenatlisapp.ui.components.OutlinedEmailField
 import org.akai.pluryrenatlisapp.ui.theme.PluryRenatlisAppTheme
 
 @Composable
 fun LoginComposition(
-    authorizationHandling: (Authorization) -> Unit = {}
+    email: String,
+    onEmailChange: (String) -> Unit,
+    preferences: SharedPreferences = LocalContext.current.getSharedPreferences("authorization", MODE_PRIVATE),
+    rememberMeAction: (Boolean) -> Unit =
+        {
+            if (it)
+                preferences.edit().putString("email", email).apply()
+            else if (preferences.contains("email"))
+                preferences.edit().remove("email").apply()
+        },
+    onLoginClick: suspend () -> Unit = {},
+
 ) {
     UtilityColumnWithLogo {
-        var email: String by remember { mutableStateOf("") }
         OutlinedEmailField(
             email = email,
-            onEmailChange = { email = it }
+            onEmailChange = onEmailChange,
         )
 
-        var rememberMe by remember { mutableStateOf(false) }
+        var rememberMe by remember { mutableStateOf(preferences.contains("email")) }
         LabeledCheckbox(
             label = "Zapamietaj mnie",
             checked = rememberMe,
-            onCheckedChange = { rememberMe = it }
+            onCheckedChange = {
+                rememberMe = it
+                rememberMeAction(it)
+            }
         )
 
-        val preferences = LocalContext.current.getSharedPreferences("authorization", MODE_PRIVATE)
-        if (rememberMe)
-            preferences.edit().putString("email", email).apply()
-        else if (preferences.contains("email"))
-            preferences.edit().remove("email").apply()
-
-        val registerVM: AuthorizationViewModel = viewModel()
-        val token by registerVM.token.observeAsState()
-        if (token?.isNotEmpty() == true)
-            authorizationHandling(Authorization(token!!))
+        val buttonOnClick = rememberCoroutineScope()
         Button(
             onClick = {
-                registerVM.authorize(email)
+                buttonOnClick.launch {
+                    onLoginClick()
+                }
             },
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier
@@ -79,7 +82,8 @@ fun LoginComposition(
 @Preview
 @Composable
 fun LoginPreview() {
+    var email by remember { mutableStateOf("") }
     PluryRenatlisAppTheme {
-        LoginComposition()
+        LoginComposition(email = email, onEmailChange = { email = it })
     }
 }
