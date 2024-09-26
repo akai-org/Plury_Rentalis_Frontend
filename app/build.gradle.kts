@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -55,12 +56,17 @@ configurations.all {
 }
 
 dependencies {
+
+    //ktor
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.android) // For Android engine
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.ktor.client.core) // Replace with the latest version
-    implementation(libs.ktor.client.engine.android)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.core)
+
+    //compose core
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -72,6 +78,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.safe.args.generator)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.transport.runtime)
+
+    //testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
